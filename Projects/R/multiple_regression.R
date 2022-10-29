@@ -84,7 +84,7 @@ plot(mouse.data)
 ## STEP 2: Do the regression
 multiple.regression <- lm(size ~ weight + tail, data=mouse.data)
 
-## STEP 3: Look at the R^2, F-value and p-value
+## STEP 3: Look at the R^2 (LARGE VALUE = 1), F-value and p-value (SMALL VALUE < 0.05)
 summary(multiple.regression)
 
 
@@ -150,3 +150,4 @@ summary(multiple.regression)
 ## this line tells us that including the "tail" term makes a statistically
 ## significant difference. The magnitude can be determined by looking
 ## at the change in R^2 between the simple and multiple regressions.
+

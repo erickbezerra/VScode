@@ -1,0 +1,10 @@
+import numpy as np
+from pyswarm import pso
+
+# objective function (to be minimized)
+objetivefunction(x):
+    return x**2
+
+# Define the lower and upper bounds for H, d, t, respectively
+lb = [10, 1, 0.01]
+ub = [30, 3, 0.25]
