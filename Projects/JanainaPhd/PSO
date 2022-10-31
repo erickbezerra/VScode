@@ -1,21 +1,37 @@
 # https://www.youtube.com/watch?v=JqTASBiMVT8&ab_channel=EngineerHunter
-
-from random import random
 import numpy as np
+import matplotlib.pyplot as plt
 
 # objective function (to be minimized)
 def sphere_function(x):
-    return np.sum(np.square(x))
-
+    z = np.sum(np.square(x))
+    return z
 
 # Parameters
+# H. A. Hefny and S. S. Azab, "Chaotic particle swarm optimization," 2010 The 7th International Conference on Informatics and Systems (INFOS), 2010, pp. 1-8.
 swarm_size = 50
 c1, c2 = 2.5, 2.5
 iterMax = 1000  # Max iterations (Stopping criteria)
-inertia_weight = 0.9 - ((0.9-0.4)/iterMax)*nplinspace(0, iterMax, iterMax)
+inertia_weight = 0.9 - ((0.9-0.4)/iterMax)*np.linspace(0, iterMax, iterMax)
 xMin, xMax = -100, 100  # Initial position range
-vMax = xMax  # Velocity limit (Nao entendi o uso do lambda)
+vMin, vMax = xMin, xMax  # Velocity limit (Nao entendi o uso do lambda)
 d = 30  # Dimension
+
+def limit_velocity(V):
+    for i in range(len(V)):
+        if V[i] > vMax:
+            V[i] = vMax
+        if V[i] < vMin:
+            V[i] = vMin
+    return V
+
+def limit_position(X):
+    for i in range(len(X)):
+        if X[i] > xMax:
+            X[i] = xMax
+        if X[i] < xMin:
+            X[i] = xMin
+    return X        
 
 #%% PSO
 # Kennedy, J., & Eberhart, R. (n.d.). Particle swarm optimization. Proceedings of ICNN’95 - International Conference on Neural Networks. doi:10.1109/icnn.1995.488968
@@ -23,8 +39,8 @@ def optimization():
     class particle():
         def __init__(self):
             self.position = np.random.uniform(xMin, xMax, [swarm_size,d])
-            self.velocity = np.zeros(swarm_size,d)
-            # self.velocity = np.random.uniform(-100, Vmax, [swarm_size,d])
+            # self.velocity = np.zeros(swarm_size,d)
+            self.velocity = np.random.uniform(vMin, vMax, [swarm_size,d])
             self.cost = np.zeros(swarm_size)
             self.cost[:] = sphere_function(self.position[:])
             self.pbest = np.copy(self.position)
@@ -39,8 +55,25 @@ def optimization():
                     self.velocity[i] = (inertia_weight[i]*self.velocity[ii]
                                         +c1*np.random.rand(d)*(self.pbest[ii]-self.position[ii])
                                         +c2*np.random.rand(d)*(self.gbest-self.position[ii]))
+                    self.velocity[ii] = limit_velocity(self.velocity[ii])
                     self.position[ii] = self.position[ii] + self.velocity[ii]
+                    self.position[ii] = limit_position(self.position[ii])
+                    self.cost[ii] = sphere_function(self.position[ii])
+                    if self.cost[ii] < self.pbest_cost[ii]:
+                        self.pbest[ii] = self.position[ii]
+                        self.pbest_cost[ii] = self.cost[ii]
+                        if self.pbest_cost[ii] < self.gbest_cost:
+                            self.gbest_cost = self.pbest_cost[ii]
+            self.best_cost_iteration[i] = self.gbest_cost
+        def plot(self):
+            plt.semilogy(self.best_cost_iteration)
 
+    a = particle()     
+    a.evaluate()
+    a.plot()
+
+#%% Run
+optimization()
 
 
 
