@@ -20,7 +20,7 @@ d = 30  # Dimension
 #%% PSO
 # Kennedy, J., & Eberhart, R. (n.d.). Particle swarm optimization. Proceedings of ICNN’95 - International Conference on Neural Networks. doi:10.1109/icnn.1995.488968
 def optimization():
-    class particle()
+    class particle():
         def __init__(self):
             self.position = np.random.uniform(xMin, xMax, [swarm_size,d])
             self.velocity = np.zeros(swarm_size,d)
