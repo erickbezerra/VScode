@@ -1,10 +1,47 @@
+# https://www.youtube.com/watch?v=JqTASBiMVT8&ab_channel=EngineerHunter
+
+from random import random
 import numpy as np
-from pyswarm import pso
 
 # objective function (to be minimized)
-objetivefunction(x):
-    return x**2
+def sphere_function(x):
+    return np.sum(np.square(x))
 
-# Define the lower and upper bounds for H, d, t, respectively
-lb = [10, 1, 0.01]
-ub = [30, 3, 0.25]
+
+# Parameters
+swarm_size = 50
+c1, c2 = 2.5, 2.5
+iterMax = 1000  # Max iterations (Stopping criteria)
+inertia_weight = 0.9 - ((0.9-0.4)/iterMax)*nplinspace(0, iterMax, iterMax)
+xMin, xMax = -100, 100  # Initial position range
+vMax = xMax  # Velocity limit (Nao entendi o uso do lambda)
+d = 30  # Dimension
+
+#%% PSO
+# Kennedy, J., & Eberhart, R. (n.d.). Particle swarm optimization. Proceedings of ICNN’95 - International Conference on Neural Networks. doi:10.1109/icnn.1995.488968
+def optimization():
+    class particle()
+        def __init__(self):
+            self.position = np.random.uniform(xMin, xMax, [swarm_size,d])
+            self.velocity = np.zeros(swarm_size,d)
+            # self.velocity = np.random.uniform(-100, Vmax, [swarm_size,d])
+            self.cost = np.zeros(swarm_size)
+            self.cost[:] = sphere_function(self.position[:])
+            self.pbest = np.copy(self.position)
+            self.pbest_cost = np.copy(self.cost)
+            self.index = np.argmin(self.pbest_cost)
+            self.gbest = self.pbest[self.index]
+            self.gbest_cost = self.pbest_cost[self.index]
+            self.best_cost_iteration = np.zeros(iterMax)
+        def evaluate(self):
+            for i in range(iterMax):
+                for ii in range(swarm_size):
+                    self.velocity[i] = (inertia_weight[i]*self.velocity[ii]
+                                        +c1*np.random.rand(d)*(self.pbest[ii]-self.position[ii])
+                                        +c2*np.random.rand(d)*(self.gbest-self.position[ii]))
+                    self.position[ii] = self.position[ii] + self.velocity[ii]
+
+
+
+
+
