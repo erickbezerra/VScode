@@ -52,7 +52,7 @@ def optimization():
         def evaluate(self):
             for i in range(iterMax):
                 for ii in range(swarm_size):
-                    self.velocity[i] = (inertia_weight[i]*self.velocity[ii]
+                    self.velocity[ii] = (inertia_weight[i]*self.velocity[ii]
                                         +c1*np.random.rand(d)*(self.pbest[ii]-self.position[ii])
                                         +c2*np.random.rand(d)*(self.gbest-self.position[ii]))
                     self.velocity[ii] = limit_velocity(self.velocity[ii])
@@ -67,7 +67,10 @@ def optimization():
             self.best_cost_iteration[i] = self.gbest_cost
         def plot(self):
             plt.semilogy(self.best_cost_iteration)
-
+            plt.ylabel('Best function value')
+            plt.xlabel('Number of iteration')            
+            plt.title('PSO of sphere function')
+            print("Gbest", self.gbest_cost)
     a = particle()     
     a.evaluate()
     a.plot()
